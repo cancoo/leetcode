@@ -1,0 +1,30 @@
+//题目：计算二叉树的Tilt，二叉树结点的Tilt是其左右子树结点value值的和的差的绝对值，整个二叉树的Tile是所有结点的Tilt之和。 
+//思路：采用后序遍历递归求解左右子树的Tilt， 后序遍历函数postorder（root）返回左右子树value和，并加上该Node的val，作为root的左右子树sum。
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int tilt = 0;
+    int findTilt(TreeNode* root) {
+        sum(root);
+        return tilt;
+    }
+    
+    int sum(TreeNode* root){
+        if(root==nullptr)
+            return 0;
+        int left = sum(root->left);
+        int right = sum(root->right);
+        tilt += abs(left-right);
+        return root->val + left + right;
+    }
+};
