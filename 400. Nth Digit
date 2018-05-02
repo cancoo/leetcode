@@ -1,0 +1,54 @@
+//题目：Nth Digit
+
+//分析：
+/**
+第一步：找出给定的 n 落在几位数的范围内
+自然数序列中各个数的数字分布：
+1-9:       1*9
+10-99：    2*90
+100-999：  3*900
+……
+即，i * 9 * 10^i
+所以，总位数sum=sum+i*9*tens;(其中，i++; tens *= 10; )
+比较即可知道 n 落在几位数范围内。
+例如给定n = 150，
+首先一位有9个数字，所以位数可以+1，这样n-9 = 141. 然后2位的数字有2*90= 180，大于141，所以目标数字肯定是2位的。
+
+第二步：找到具体落在哪个数字
+用10+(141-1)/2 = 80
+
+第三步：找出具体在哪一位上
+用(141-1)%2＝0，求出该数字（80）的第0位（即8）
+*/
+
+class Solution {
+public:
+    int findNthDigit(int n) {
+        
+        int i=1;
+        long long tens=1;
+        long long sum=0;
+        while(sum<n)
+        {
+            sum+=i*9*tens;
+            ++i;
+            tens*=10;
+        }
+        --i;
+        tens/=10;
+        sum-=i*9*tens;
+        
+        //cal the gap with the lowest of this section
+        long long diff=n-sum;
+        long long resNum=tens+(diff-1)/i; //求出具体是哪个数字
+        int resBit=(diff-1)%i;  //求出具体是这个数字的哪一位
+        
+        //to string and return the resNum's resBit position
+        string s=to_string(resNum);
+        return s[resBit]-'0';
+    }
+};
+
+//后记：
+//两个坑，一个是sum类型是long long，int太小了；另一个是最后转变成字符串后要记得减去'0'变成数字输出。
+//记住两个公式：resNum=tens+(diff-1)/i;  resBit=(diff-1)%i;
