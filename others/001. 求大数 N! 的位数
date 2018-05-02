@@ -1,1 +1,19 @@
-//求大数N！的位数
+//题目：求大数N！的位数
+//分析：
+//N！=1*2*3....*n，结果的位数就是取对数，log10(n!)=log10(1) + log10(2) + log10(3)... + log10(n); 
+//所以循环求和就可以了！但是这里注意一点 结果要加1！因为这里计算出来的 log10(1)=0  ！
+
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+	int n;
+	double sum=0;
+	scanf("%d",&n);
+	for(int i=1;i<=n;i++)
+	{
+		sum=sum+log10(i);
+	}
+	printf("%d\n",(int)sum+1);
+	return 0;
+}
