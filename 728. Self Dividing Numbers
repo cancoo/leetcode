@@ -1,0 +1,49 @@
+//题目;
+//A self-dividing number is a number that is divisible by every digit it contains.
+//For example, 128 is a self-dividing number because 128 % 1 == 0, 128 % 2 == 0, and 128 % 8 == 0.
+/**
+Input: 
+left = 1, right = 22
+Output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 15, 22]
+*/
+
+//分析：
+//一位一位验证，没什么难度
+
+//代码：
+class Solution {
+public:
+    bool selfDividing(int n)
+    {
+        int temp=n;
+        while(temp>0)
+        {
+            int ttt=temp%10;
+            if(ttt==0)
+                return false;
+            if(n%ttt==0)
+            {
+                temp/=10;
+                continue;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    vector<int> selfDividingNumbers(int left, int right) {
+        int NUM=left;
+        vector<int> res;
+        while(NUM<=right)
+        {
+            if(selfDividing(NUM))
+            {
+                res.push_back(NUM);
+            }
+            NUM++;
+        }
+        return res;
+    }
+};
