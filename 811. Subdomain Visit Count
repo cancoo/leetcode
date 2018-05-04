@@ -1,0 +1,48 @@
+//题目：
+//统计子域名访问计数。
+
+/**
+输入: 
+["9001 discuss.leetcode.com"]
+输出: 
+["9001 discuss.leetcode.com", "9001 leetcode.com", "9001 com"]
+说明: 
+例子中仅包含一个网站域名："discuss.leetcode.com"。按照前文假设，子域名"leetcode.com"和"com"都会被访问，所以它们都被访问了9001次。
+*/
+
+//分析：
+//考研STL，string等基本库的使用：stoi，string.find,string.substr(),to_string()等等
+
+//代码：
+class Solution {
+public:
+    vector<string> subdomainVisits(vector<string>& cpdomains) {
+        unordered_map<string, int> statistic;
+        for(auto domain : cpdomains)
+        {
+            int i = domain.find(" ");
+            int num = stoi(domain.substr(0,i));
+            string address = domain.substr(i+1, domain.size()-i-1);
+            
+            for(int j=address.size()-1; j>=0; j--)
+            {
+                if(address[j]=='.')
+                {
+                    statistic[address.substr(j+1, address.size()-j-1)] += num;
+                }
+                else if(j==0)
+                {
+                    statistic[address.substr(0, address.size())] += num;
+                }
+            }
+        }
+        
+        vector<string> resDomain;
+        for(auto domain : statistic)
+        {
+            resDomain.push_back(to_string(domain.second)+" "+domain.first);
+        }
+        
+        return resDomain;
+    }
+};
