@@ -1,0 +1,56 @@
+//题目：
+//求二叉树每层的均值
+/**
+Input:
+    3
+   / \
+  9  20
+    /  \
+   15   7
+Output: [3, 14.5, 11]
+Explanation:
+The average value of nodes on level 0 is 3,  on level 1 is 14.5, and on level 2 is 11. Hence return [3, 14.5, 11].
+*/
+
+//分析：
+//用个队列存每层的节点，再逐个输出，求均值；再到下一层
+
+//代码：
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<double> averageOfLevels(TreeNode* root) {        
+        queue<TreeNode*> que;
+        vector<double> res;
+        double avg = 0;
+        
+        que.push(root);
+        
+        while(!que.empty())
+        {
+            int n=que.size();
+            double sum=0.0;
+            for(int i=0; i!=n; i++)
+            {
+                TreeNode* node = que.front();
+                que.pop();
+                sum += node->val;
+                if (node->left != nullptr)
+                    que.push(node->left);
+                if (node->right != nullptr)
+                    que.push(node->right);
+            }
+            avg = sum / n;
+            res.push_back(avg);
+        }
+        return res;
+    }
+};
