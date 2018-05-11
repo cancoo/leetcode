@@ -1,0 +1,70 @@
+//题目：
+/**
+给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+说明：解集不能包含重复的子集。
+
+例子：
+输入: [1,2,2]
+输出:
+[
+  [2],
+  [1],
+  [1,2,2],
+  [2,2],
+  [1,2],
+  []
+]
+
+
+分析：
+设nums={1,2,2}，则size=3
+在不考虑重复的情况下，子集共有2^3=8个
+分别为：
+【1,2,2】
+   0,0,0  {}
+   0,0,1  {2}
+   0,1,0  {2}
+   0,1,1  {2,2}
+   1,0,0  {1}
+   1,0,1  {1,2}
+   1,1,0  {1,2}
+   1,1,1  {1,2,2}
+1表示对应位的元素存在于集合中，0表示不存在。
+因此只要从0遍历到2^size - 1，如果对应位为1，则将nums中相应元素加入当前集合。
+*/
+
+//
+class Solution {
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int> > result;
+        map<vector<int>, bool> m;
+        int size=nums.size();
+        int count=pow(2.0,size);
+        for(int i=0; i<count; i++)
+        {
+            vector<int> cur;
+            int tag=i;
+            
+            for(int j=size-1; j>=0; j--)
+            {
+                if(!tag) break; //0100****001, if pos is 0, skip over
+                
+                if(tag%2==1) //0100****001, if pos is 1, get the pos's number
+                {
+                    cur.push_back(nums[j]);
+                }
+                tag>>=1; //to the next(right) position
+            }
+            
+            sort(cur.begin(), cur.end());
+            
+            if(m.find(cur) == m.end()) //avoiding repetition
+            {
+                m[cur] = true;
+                result.push_back(cur);
+            }
+        }
+        return result;
+    }
+};
